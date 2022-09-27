@@ -3,7 +3,7 @@ This project pretends to send guild chat from world of warcraft into a discord c
 # How to use
 1. Use addon [Elephant](https://www.wowace.com/projects/elephant)
 2. Configure discord channel (you need admin acces to your server)
-2. Update the `./src/config/config file`
+2. Update `./src/config/config`
 3. Run python script
 
 # How it works
