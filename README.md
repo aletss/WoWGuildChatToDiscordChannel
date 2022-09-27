@@ -1,7 +1,10 @@
 "# WoWGuildChatToDiscordChannel" 
 
 # How to use
-
+1. Use addon [Elephant](https://www.wowace.com/projects/elephant)
+2. Configure discord channel (you need admin acces to your server)
+2. Update the `./src/config/config file`
+3. Run python script
 
 # How it works
 It's separated into 2 sections
