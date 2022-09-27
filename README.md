@@ -1,4 +1,4 @@
-"# WoWGuildChatToDiscordChannel" 
+This project pretends to send guild chat from world of warcraft into a discord channel.
 
 # How to use
 1. Use addon [Elephant](https://www.wowace.com/projects/elephant)
