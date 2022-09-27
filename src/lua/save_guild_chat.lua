@@ -1,2 +1,0 @@
--- Gets a single guild chat message
--- Saves into a new line
