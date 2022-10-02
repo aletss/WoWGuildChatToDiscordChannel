@@ -1,9 +1,11 @@
-from email import message
+import luadata
 import os
 import json
 from time import sleep
 import discord
 from discord.ext import commands
+from datetime import datetime
+
 
 # load discord information
 # Config file
@@ -11,6 +13,11 @@ repo_name = "WoWGuildChatToDiscordChannel"
 cur_path = os.path.dirname(__file__)
 repo_path = os.path.join((repo_name).join(cur_path.split(repo_name)[:-1]), repo_name)
 config_path = os.path.join(repo_path, "src", "config")
+
+temp_folder = os.path.join(repo_path, "temp")
+last_timestamp_path = os.path.join(temp_folder, "last_timestamp.txt")
+
+discord_channel = 824027419965915157 # "#desarrollo"
 
 with open(os.path.join(config_path,"config.json")) as f:
     config = json.load(f)
@@ -21,24 +28,63 @@ bot = commands.Bot(command_prefix=">", description="This is a guild-chat bot", i
 # Format texts
 # Set discord format for messages
 text_format = """```diff
-+ [{author}]: {message}
++ [{time}][{author}]: {message}
 ```"""
 
 # Events
 @bot.event
 async def on_ready():
-    print("before channel")
-    channel = bot.get_channel(824027419965915157) # desarrollo
-    print("after channel")
-    print("before loop")
+    channel = bot.get_channel(discord_channel) # desarrollo
 
     while True:
         # reads txt
+        data = luadata.read(config["elephant_addon"]["saved_variables_path"], encoding="utf-8")
+        with open(last_timestamp_path, "r") as f:
+            last_timestamp = int(f.read())
+
         # Identify new messages
+        for char_dict_key in data["char"]:
+            char_dict = data["char"][char_dict_key]
+            for log_key in char_dict["logs"]:
+                log_dict = char_dict["logs"][log_key]
+                if log_dict["name"] == "Hermandad":
+                    guild_log = log_dict["logs"]
+                    break
+        
         print("in loop")
-        sleep(10)
+        for msg in guild_log:
+            if len(msg.keys()) < 4 or ("type" in msg and msg["type"] != "GUILD"): 
+                continue
+            msg_character_name = msg["arg2"]
+            msg_time = datetime.utcfromtimestamp(msg["time"]).strftime('%Y-%m-%d %H:%M:%S')
+            msg_text = msg["arg1"]
+            
+            if last_timestamp >= msg["time"]:
+                continue
+            else:
+                last_timestamp = msg["time"]
+                with open(last_timestamp_path, "w") as f:
+                    f.write(str(last_timestamp))
+
+
+            print(
+                text_format.format(
+                    time=msg_time
+                    , author=msg_character_name
+                    , message=msg_text
+                    )
+                )
+            
+            await channel.send(
+                text_format.format(
+                    time=msg_time
+                    , author=msg_character_name
+                    , message=msg_text)
+            )
+            sleep(10)
+
         # Send each message into discord
-        await channel.send(text_format.format(author="Aletss", message="Hello!!"))
+        # await channel.send(text_format.format(author="Aletss", message="Hello!!"))
 
 
 # Run

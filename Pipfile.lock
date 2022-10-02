@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "44ef500e997a1fe38542ab105f532784b9b634ac1b8f948c58b89aa67fb6a75d"
+            "sha256": "8f7a0eb1cdc12b15c29aeee5312f2e066b647eb0c8f1bfc4d93bfcb0d8d71f3d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -221,6 +221,14 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==3.4"
+        },
+        "luadata": {
+            "hashes": [
+                "sha256:7cffdfe889fd42b9de44c786c3cfd6591d35ff66ccf1812d0cbd2a3bbc6ddaf0",
+                "sha256:e0ff43e65fb7dada87cdfc0e5b0f089de2e1080f6857f866b377a485c0694edf"
+            ],
+            "index": "pypi",
+            "version": "==1.0.5"
         },
         "multidict": {
             "hashes": [
