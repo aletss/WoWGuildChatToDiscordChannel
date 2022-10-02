@@ -5,6 +5,7 @@ from time import sleep
 import discord
 from discord.ext import commands
 from datetime import datetime
+import shutil
 
 
 # load discord information
@@ -17,7 +18,8 @@ config_path = os.path.join(repo_path, "src", "config")
 temp_folder = os.path.join(repo_path, "temp")
 last_timestamp_path = os.path.join(temp_folder, "last_timestamp.txt")
 
-discord_channel = 824027419965915157 # "#desarrollo"
+discord_channel = 1026212397045788682 # "#🟩guild_chat"
+# discord_channel = 1026212884402946088 # "#🟧raid_chat"
 
 with open(os.path.join(config_path,"config.json")) as f:
     config = json.load(f)
@@ -37,8 +39,14 @@ async def on_ready():
     channel = bot.get_channel(discord_channel) # desarrollo
 
     while True:
+        # Creates a copy of original file into tmp path every minute
+        sleep(60)
+        elephant_file_original = config["elephant_addon"]["saved_variables_path"]
+        elephant_file_copy = os.path.join(temp_folder, "elephant_lua_copy.lua")
+        shutil.copy(elephant_file_original, elephant_file_copy)
+            
         # reads txt
-        data = luadata.read(config["elephant_addon"]["saved_variables_path"], encoding="utf-8")
+        data = luadata.read(elephant_file_copy, encoding="utf-8")
         with open(last_timestamp_path, "r") as f:
             last_timestamp = int(f.read())
 
